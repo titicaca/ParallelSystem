@@ -1,0 +1,77 @@
+//#include "mpi.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void initGame(matrix,xNum,yNum,x,y,dotsNum)
+	int **matrix;
+	int xNum;
+	int yNum; 
+	int *x; 
+	int *y;
+	int dotsNum;
+{
+	printf("initializing game...\n");
+	int i , j;
+	int tmpx, tmpy;
+	for (i=0; i < yNum; i++){
+		 for (j=0; j < xNum; j++){
+			*((int*)matrix+i*xNum+j) = 0;
+		}
+	}
+	printf("map initialization done!\n");
+	for( i =0; i< dotsNum;i++){
+		tmpy = *y;
+		tmpx = *x;
+		*((int*)matrix+ tmpy * xNum + tmpx) = 1;
+		x++;
+		y++;
+	}
+	
+	
+	
+}
+
+void printMatrix(matrix, xNum, yNum)
+	int **matrix;
+	int xNum;
+	int yNum;
+{
+	int i,j;
+	for(i=0; i<yNum; i++){		
+		for(j=0; j<xNum; j++){
+			printf(" %d ", *((int *)matrix+ i* xNum + j);
+		}
+		printf("\n");
+	}
+}
+
+int main (argc, argv)
+	int argc;
+	char *argv[];  //usage: <par-NUM> <xNUM> <yNUM> <dotsNUM> <x1> <y1>....<xn> <yn>
+{
+	if(argc < 4){
+		printf("Error Parameters/n");
+		printf(" //usage: <par-NUM> <xNUM> <yNUM> <dotsNUM> <x1> <y1>....<xn> <yn>");
+		return 0;
+	}
+
+	int rank, size;
+		
+	int par_num = atoi(argv[1]);
+	int xNum = atoi(argv[2]);
+	int yNum = atoi(argv[3]);
+	int matrix[yNum][xNum];
+	int dotsNum = atoi(argv[4]);
+	int i;
+	int x[dotsNum], y[dotsNum];
+	for ( i =0 ; i<dotsNum; i++){
+		x[i] = atoi(argv[5+2*i]);
+		y[i] = atoi(argv[5+2*i+1]);
+	}
+
+	initGame(matrix,xNum, yNum, x, y, dotsNum);
+
+	printMatrix(matrix, xNum, yNum);
+}
+	
